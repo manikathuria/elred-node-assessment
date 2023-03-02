@@ -1,5 +1,7 @@
+const logger = require('../logger/logger');
+
 module.exports = (error, res) => {
-    console.error(error, ":error handler:\n")
+    logger.error(error, ":error handler:\n")
     if (error &&
       error.response &&
       error.response.status == 401) return res.status(200).send({ 

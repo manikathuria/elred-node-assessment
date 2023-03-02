@@ -3,24 +3,33 @@ const uri = process.env.ATLAS_URI;
 const client = new MongoClient(uri);
 var path = require('path');
 require('dotenv').config({ path: __dirname + '/.env' });
-const logger = require("./utilities/logger/logger")
+const logger = require("./utilities/logger/logger");
+const mongoose = require('mongoose');
+
 const connectDb = async () => {
-    try {
-      await client.connect();
-      const dbRole = await client.db().command({ hello: 1 });
-      logger.info(`Role of database - Host: ${dbRole.me}  Is primary: ${dbRole.isWritablePrimary}`);
-      //await client.close();
-    } catch (e) {
-      logger.error('db connection error: ', e.message);
-    }
-  };
+  try {
+    await client.connect();
+    logger.info(`Database connected!!`);
+    mongoose.connect(
+      process.env.ATLAS_URI,
+      (err) => {
+        if (err) logger.error(err)
+        else logger.info("mongdb is connected");
+      }
+    );
 
-  const getDb = () => {
-    //if (db == "" ) return;
-    return client.db();
+    //await client.close();
+  } catch (e) {
+    logger.error('db connection error: ', e);
   }
+};
 
-  module.exports = {
-    connectDb,
-    getDb
-  }
+const getDb = () => {
+  //if (db == "" ) return;
+  return client.db();
+}
+
+module.exports = {
+  connectDb,
+  getDb
+}
