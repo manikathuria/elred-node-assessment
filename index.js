@@ -53,5 +53,3 @@ app.listen(process.env.PORT, async () => {
   }
 
 });
-
-module.exports = app;
