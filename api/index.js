@@ -1,11 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const logger = require("./utilities/logger/logger");
+const logger = require("../utilities/logger/logger");
 const cors = require("cors");
-const indexRouter = require('./modules/index')
+const indexRouter = require('../modules/index')
 var path = require("path");
 require('dotenv').config({ path: __dirname + '/.env' });
-const { connectDb } = require('./db_connection');
+const { connectDb } = require('../db_connection');
 const app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
