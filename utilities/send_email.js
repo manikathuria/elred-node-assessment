@@ -15,18 +15,17 @@ module.exports = async (user, type, token = null) => {
         subject = 'Verify your email'
         html = `Your OTP is <b> ${token} </b>. It will expire in 1 hour.`
     }
+
     let mailTransporter = nodemailer.createTransport({
-        name: "smtp.ethereal.email",
-        host: "smtp.ethereal.email",
-        port: 587,
+        service: 'gmail',
         auth: {
-            user: process.env.ETHEREAL_EMAIL, // generated ethereal user
-            pass: process.env.ETHEREAL_PASSWORD, // generated ethereal password
-        },
+            user: process.env.SENDER_EMAIL,
+            pass: process.env.SENDER_PASSWORD
+        }
     });
 
     let mailDetails = {
-        from: `${process.env.SENDER_NAME} <${process.env.ETHEREAL_EMAIL}>`,
+        from: `${process.env.SENDER_NAME} <${process.env.SENDER_EMAIL}>`,
         to: user.email,
         subject,
         html
@@ -37,7 +36,7 @@ module.exports = async (user, type, token = null) => {
             logger.error('error in nodemailer: ', err);
             throw err;
         } else {
-            console.log('Email sent successfully');
+            logger.info('Email sent successfully');
         }
     });
 
